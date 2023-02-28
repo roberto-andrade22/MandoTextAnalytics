@@ -2,7 +2,7 @@ def load_model(MODEL = 't5-base'):
     from transformers import T5Tokenizer, T5ForConditionalGeneration
     import numpy as np
     import os
-    os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '1024'
+    os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '1280'
     import torch
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

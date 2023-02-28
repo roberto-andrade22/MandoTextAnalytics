@@ -1,7 +1,7 @@
 import multiprocessing as mp
 import time
 import os
-os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '1024'
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '1280'
 import torch
 from get_plot import *
 from  load_model import *
