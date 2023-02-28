@@ -15,11 +15,10 @@ def load_model(MODEL = 't5-base'):
 
 import torch
 import torch.nn
-from torch.cuda.amp import autocast
 
 fine_tuned = 'Alred/t5-base-finetuned-summarization-cnn-ver2'
 
-model, tokenizer = load_model(fine_tuned)
+model, tokenizer = load_model()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -30,16 +29,15 @@ def make_episode_summary(episode_plot, model = model, tokenizer = tokenizer, dev
     summaries = []
   
     for chunk in chunks:
-        with autocast():
-            input_ids = tokenizer.encode(chunk, return_tensors="pt").to(device)
-            summary_ids = model.generate(input_ids, 
-                                        min_length=5, 
-                                        max_length= 35, 
-                                        length_penalty=1.5, 
-                                        num_beams=3,
-                                        early_stopping=True)
-            summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-            summaries.append(summary)
+        input_ids = tokenizer.encode(chunk, truncation = True, return_tensors="pt").to(device)
+        summary_ids = model.generate(input_ids, 
+                                    min_length=5, 
+                                    max_length= 35, 
+                                    length_penalty=1.5, 
+                                    num_beams=3,
+                                    early_stopping=True)
+        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+        summaries.append(summary)
     summary = ' '.join(summaries)
 
     return(summary)
