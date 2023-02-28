@@ -17,6 +17,7 @@ def load_model(MODEL = 't5-base'):
 
 import torch
 import torch.nn
+import gc
 
 fine_tuned = 'Alred/t5-base-finetuned-summarization-cnn-ver2'
 
@@ -26,20 +27,21 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def make_episode_summary(episode_plot, model = model, tokenizer = tokenizer, device = device):
-    chunk_size = 512
+    chunk_size = 340
     chunks = [episode_plot[i:i+chunk_size] for i in range(0, len(episode_plot), chunk_size)]
     summaries = []
   
     for chunk in chunks:
         input_ids = tokenizer.encode(chunk,max_length = chunk_size,truncation =True, padding = True, return_tensors="pt").to(device)
         summary_ids = model.generate(input_ids, 
-                                    min_length=30, 
-                                    max_length= 60, 
+                                    min_length=20, 
+                                    max_length= 40, 
                                     length_penalty=2.0, 
-                                    num_beams=4,
+                                    num_beams=3,
                                     early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
         summaries.append(summary)
     summary = ' '.join(summaries)
-
+    torch.cuda.empty_cache()
+    gc.collect()
     return(summary)
