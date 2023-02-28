@@ -1,18 +1,10 @@
 import multiprocessing as mp
 import time
 import os
-os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '1280'
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '5120'
 import torch
 from get_plot import *
 from  load_model import *
-
-def summarize_episodes(episodes):
-    summaries = []
-    for episode in episodes:
-        summary = make_episode_summary(episode)
-        summaries.append(summary)
-        torch.cuda.empty_cache()
-    return summaries
 
 if __name__ == '__main__':
     mp.set_start_method('spawn')
@@ -24,25 +16,29 @@ if __name__ == '__main__':
         with mp.Pool(torch.cuda.device_count()) as pool:
             summaries_1 = []
             summaries_2 = []
-            for summary in pool.imap(make_episode_summary, season_one_episodes):
+            for summary in pool.map(make_episode_summary, season_one_episodes):
                 summaries_1.append(summary)
                 torch.cuda.empty_cache()
+                gc.collect()
 
-            for summary in pool.imap(make_episode_summary, season_two_episodes):
+            for summary in pool.map(make_episode_summary, season_two_episodes):
                 summaries_2.append(summary)
                 torch.cuda.empty_cache()
+                gc.collect()
     else:
         summaries_1 = []
         for episode in season_one_episodes:
             summary = make_episode_summary(episode)
             summaries_1.append(summary)
             torch.cuda.empty_cache()
+            gc.collect()
 
         summaries_2 = []
         for episode in season_two_episodes:
             summary = make_episode_summary(episode)
             summaries_2.append(summary)
             torch.cuda.empty_cache()
+            gc.collect()
  
     end = time.time()
 

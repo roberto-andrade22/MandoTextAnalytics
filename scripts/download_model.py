@@ -7,7 +7,7 @@ def download_model(MODEL = 't5-base'):
 
     model = T5ForConditionalGeneration.from_pretrained(MODEL)
 
-    save_path = '../' + MODEL + '_model_pytorch'
+    save_path = MODEL + '_model_pytorch'
     
     try:
         os.makedirs(save_path)
