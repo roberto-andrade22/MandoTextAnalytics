@@ -1,6 +1,8 @@
 def load_model(MODEL = 't5-base'):
     from transformers import T5Tokenizer, T5ForConditionalGeneration
     import numpy as np
+    import os
+    os.environ['PYTORCH_CUDA_ALLOC_CONF'] = '1024'
     import torch
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -24,17 +26,17 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def make_episode_summary(episode_plot, model = model, tokenizer = tokenizer, device = device):
-    chunk_size = 256
+    chunk_size = 512
     chunks = [episode_plot[i:i+chunk_size] for i in range(0, len(episode_plot), chunk_size)]
     summaries = []
   
     for chunk in chunks:
-        input_ids = tokenizer.encode(chunk, truncation = True, return_tensors="pt").to(device)
+        input_ids = tokenizer.encode(chunk,max_length = chunk_size,truncation =True, padding = True, return_tensors="pt").to(device)
         summary_ids = model.generate(input_ids, 
-                                    min_length=5, 
-                                    max_length= 35, 
-                                    length_penalty=1.5, 
-                                    num_beams=3,
+                                    min_length=30, 
+                                    max_length= 60, 
+                                    length_penalty=2.0, 
+                                    num_beams=4,
                                     early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
         summaries.append(summary)
