@@ -19,9 +19,7 @@ import torch
 import torch.nn
 import gc
 
-fine_tuned = 'Alred/t5-base-finetuned-summarization-cnn-ver2'
-
-model, tokenizer = load_model(fine_tuned)
+model, tokenizer = load_model()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -35,9 +33,9 @@ def make_episode_summary(episode_plot, model = model, tokenizer = tokenizer, dev
         input_ids = tokenizer.encode(chunk, return_tensors="pt").to(device)
         summary_ids = model.generate(input_ids, 
                                     min_length=5, 
-                                    max_length= 58, 
-                                    length_penalty= 2.5, 
-                                    num_beams=4,
+                                    max_length= 65, 
+                                    length_penalty= 3.0, 
+                                    num_beams=5,
                                     early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
         summaries.append(summary)
