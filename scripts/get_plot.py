@@ -54,7 +54,8 @@ def get_season_plot(url_season):
 
 season_one = base_url + "wiki/The_Mandalorian_Season_One"
 season_two = base_url + "wiki/The_Mandalorian_Season_Two"
-season_three = base_url + "wiki/The_Mandalorian_Season_Three"
+book_of_boba_fett = base_url + "wiki/The_Book_of_Boba_Fett"
 
 season_one_episodes = get_season_plot(season_one)
 season_two_episodes = get_season_plot(season_two)
+boba_fett_episodes = get_episode_plot(book_of_boba_fett)

@@ -22,6 +22,13 @@ if __name__ == '__main__':
         torch.cuda.empty_cache()
         gc.collect()
 
+    summaries_boba = []
+    for episode in boba_fett_episodes:
+        summary = make_episode_summary(episode)
+        summaries_boba.append(summary)
+        torch.cuda.empty_cache()
+        gc.collect()    
+
     try:
         os.makedirs('../output')
 
@@ -39,5 +46,12 @@ if __name__ == '__main__':
         f.write('\n# **Season 2** \n\n')
         for i, episode_summary in enumerate(summaries_2):
             f.write("### Episode "+str(i+1+8)+":\n")
+            f.write(episode_summary)
+            f.write('\n\n')
+
+    with open('../output/summaries.md', 'a') as f:
+        f.write('\n# **The Book of Boba Fett** \n\n')
+        for i, episode_summary in enumerate(summaries_boba):
+            f.write("### Episode "+str(i+1)+":\n")
             f.write(episode_summary)
             f.write('\n\n')
