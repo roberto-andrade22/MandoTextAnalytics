@@ -1,0 +1,1 @@
+Total time of execution: 5.41 minutes.
