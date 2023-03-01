@@ -19,5 +19,4 @@ def download_model(MODEL = 't5-base'):
     tokenizer.save_pretrained(save_path)
 
 if __name__ == '__main__':
-    fine_tuned = 'Alred/t5-base-finetuned-summarization-cnn-ver2'
-    download_model(fine_tuned)
+    download_model()
