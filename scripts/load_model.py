@@ -21,7 +21,7 @@ import gc
 
 fine_tuned = 'Alred/t5-base-finetuned-summarization-cnn-ver2'
 
-model, tokenizer = load_model()
+model, tokenizer = load_model(fine_tuned)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
