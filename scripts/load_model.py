@@ -34,7 +34,7 @@ def make_episode_summary(episode_plot, model = model, tokenizer = tokenizer, dev
         summary_ids = model.generate(input_ids, 
                                     min_length=5, 
                                     max_length= 65, 
-                                    length_penalty= 3.0, 
+                                    length_penalty= 1.0, 
                                     num_beams=5,
                                     early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
