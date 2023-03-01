@@ -33,9 +33,9 @@ def make_episode_summary(episode_plot, model = model, tokenizer = tokenizer, dev
         input_ids = tokenizer.encode(chunk, return_tensors="pt").to(device)
         summary_ids = model.generate(input_ids, 
                                     min_length=5, 
-                                    max_length= 65, 
-                                    length_penalty= 1.0, 
-                                    num_beams=5,
+                                    max_length= 60, 
+                                    length_penalty= 1.5, 
+                                    num_beams=8,
                                     early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
         summaries.append(summary)
